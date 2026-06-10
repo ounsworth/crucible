@@ -124,6 +124,7 @@ for h in \
   harnesses/bouncy-castle/harness-bouncy-castle.sh \
   target/harness-tob-mldsa \
   harnesses/zig-stdlib/zig-out/bin/harness-zig-stdlib \
+  target/harness-bc-rust \
 ; do
   echo "=== $(basename $h) (ML-DSA) ==="
   cargo run --quiet --bin crucible -- "$h" --battery ml-dsa
@@ -140,7 +141,7 @@ done
 
 ## Tested Implementations
 
-Crucible ships with harnesses for 16 implementations across 6 languages:
+Crucible ships with harnesses for 19 implementations across 7 languages:
 
 | # | Implementation | Language | ML-KEM | ML-DSA | Deterministic |
 |---|---|---|---|---|---|
@@ -162,6 +163,7 @@ Crucible ships with harnesses for 16 implementations across 6 languages:
 | 16 | noble-post-quantum | JS | Yes | Yes | Yes |
 | 17 | Zig stdlib | Zig | Yes | Yes | Yes |
 | 18 | Orion | Rust | Yes | - | Yes |
+| 19 | Bouncy Castle Rust | Rust | — | Yes | Yes |
 
 "Deterministic" means the harness accepts explicit randomness seeds, enabling byte-for-byte comparison against the reference implementation.
 
@@ -183,6 +185,10 @@ cd harnesses/bouncy-castle
 
 # pqcrypto (standalone Rust, outside workspace)
 cd harnesses/pqcrypto && cargo build --release && cp target/release/harness-pqcrypto ../../target/
+
+# Bouncy Castle Rust (standalone Rust, outside workspace; needs nightly and a
+# bc-rust checkout adjacent to this repo — see harnesses/bouncy-castle-rust/readme.md)
+cd harnesses/bouncy-castle-rust && cargo build --release && cp target/release/harness-bc-rust ../../target/
 
 # Zig harness
 cd harnesses/zig-stdlib && zig build
@@ -321,6 +327,7 @@ crucible/
     aws-lc/              — AWS-LC (C)
     liboqs/              — liboqs/Open Quantum Safe (C)
     bouncy-castle/       — Bouncy Castle (Java)
+    bouncy-castle-rust/  — Bouncy Castle (Rust)
     wolfssl/             — wolfCrypt/wolfSSL (C)
     tob-mldsa/           — Trail of Bits ml-dsa (Go)
     noble-post-quantum/  — noble-post-quantum (JS/TS)
